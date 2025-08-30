@@ -29,7 +29,7 @@ func (c *Config) OpenWrite(name string) (io.WriteCloser, error) {
 }
 
 // OpenWriteAuto is the same as OpenWrite, but the file is closed automatically with [Close].
-// This is useful when a file needs to be open for the entirety of an application's runtime, such as when using [log.NewLogger].
+// This is useful when a file needs to be open for the entirety of an application's runtime, such as when using [log.New].
 func (c *Config) OpenWriteAuto(name string) (io.Writer, error) {
 	w, err := c.OpenWrite(name)
 	if err != nil {

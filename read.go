@@ -29,7 +29,7 @@ func (c *Config) OpenRead(name string) (io.ReadCloser, error) {
 }
 
 // OpenReadAuto is the same as OpenRead, but the file is closed automatically with [Close].
-// This is useful when a file needs to be open for the entirety of an application's runtime, such as when using [log.NewLogger].
+// This is useful when a file needs to be open for the entirety of an application's runtime, such as when using [log.New].
 func (c *Config) OpenReadAuto(name string) (io.Reader, error) {
 	r, err := c.OpenRead(name)
 	if err != nil {

@@ -23,7 +23,7 @@ func (c *Config) OpenCreate(name string, perm os.FileMode) (io.ReadWriteCloser, 
 }
 
 // OpenCreateAuto is the same as OpenCreate, but the file is closed automatically with [Close].
-// This is useful when a file needs to be open for the entirety of an application's runtime, such as when using [log.NewLogger].
+// This is useful when a file needs to be open for the entirety of an application's runtime, such as when using [log.New].
 func (c *Config) OpenCreateAuto(name string, perm os.FileMode) (io.ReadWriter, error) {
 	w, err := c.OpenCreate(name, perm)
 	if err != nil {

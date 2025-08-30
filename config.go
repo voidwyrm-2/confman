@@ -47,7 +47,9 @@ func OpenSpecific(path string) (*Config, error) {
 }
 
 // OpenHome creates a Config pointing to name beginning with a period inside of the system's home directory.
-func OpenHome(name string) (*Config, string, error) {
+//
+// Path contains the absolute path of the opened configuration directory.
+func OpenHome(name string) (*Config, Path, error) {
 	home, err := os.UserHomeDir()
 	if err != nil {
 		return nil, "", err
@@ -55,16 +57,23 @@ func OpenHome(name string) (*Config, string, error) {
 
 	path := filepath.Join(home, name)
 
+	path, err = filepath.Abs(path)
+	if err != nil {
+		return nil, "", err
+	}
+
 	conf, err := OpenSpecific(path)
 	if err != nil {
 		return nil, "", err
 	}
 
-	return conf, path, nil
+	return conf, Path(path), nil
 }
 
 // Open creates a Config pointing to name inside of the system's default config directory.
-func Open(name string) (*Config, string, error) {
+//
+// Path contains the absolute path of the opened configuration directory.
+func Open(name string) (*Config, Path, error) {
 	configPath, dot, err := GetConfigPathForSystem()
 	if err != nil {
 		return nil, "", err
@@ -85,12 +94,17 @@ func Open(name string) (*Config, string, error) {
 
 	path := filepath.Join(configPath, name)
 
+	path, err = filepath.Abs(path)
+	if err != nil {
+		return nil, "", err
+	}
+
 	conf, err := OpenSpecific(path)
 	if err != nil {
 		return nil, "", err
 	}
 
-	return conf, path, nil
+	return conf, Path(path), nil
 }
 
 // Closes all files created with [OpenReadAuto], [OpenWriteAuto], or [OpenCreateAuto].
@@ -144,7 +158,7 @@ func (c *Config) Exists(name string) (bool, error) {
 	return true, nil
 }
 
-// DeleteFile removes the specified file from the configuration directory.
+// DeleteFile removes the specified file or subdirectory from the configuration directory.
 //
 // This is a very dangerous function, it can lead to unrecoverable data loss.
 func (c *Config) DeleteFile(name string) error {
