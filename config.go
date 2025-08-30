@@ -53,7 +53,7 @@ func OpenHome(name string) (*Config, string, error) {
 		return nil, "", err
 	}
 
-	path := filepath.Join(home, "."+strings.TrimLeft(name, "."))
+	path := filepath.Join(home, name)
 
 	conf, err := OpenSpecific(path)
 	if err != nil {
